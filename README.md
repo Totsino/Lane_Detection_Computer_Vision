@@ -26,18 +26,22 @@ Installations
 OpenCV : `> conda install -c conda-forge opencv `
 moviepy (used in this project to work with videos): `> pip install moviepy`
 
+# Steps
 
-### Undistoring images 
-
-
-### Thresholding - Color thresholding and Gradient thresholding
+### 1)Undistoring images 
 
 
+### 2)Thresholding - Color thresholding and Gradient thresholding
 
-### Perspective and Inverse perspective transform
 
 
-### Lane line identification
+### 3)Perspective and Inverse perspective transform (bird Eye)
+
+
+### 4)Lane line identification
+
+
+### 5)Curvature Detection
 
 All the functions under "Helper functions" are used to identify lane lines.
 
@@ -56,8 +60,6 @@ __Hyperparameter for window:__
 
 * __step 1:__ Get the histogram of warped input image
 
-##### Histogram of above warped image
-![alt text][image5]
 
 * __step 2:__ find peaks in the histogram that serves as midpoint for our first window
 * __step 3:__ choose hyperparameter for windows
@@ -65,8 +67,6 @@ __Hyperparameter for window:__
 * __step 5:__ for each window in number of windows get indices of all non zero pixels falling in that window
 * __step 6:__ Get the x, y coordinates based off of these indices
 
-##### Output of sliding window
-![alt text][image6]
 
 __`fit_poly()`__
 
@@ -92,62 +92,7 @@ once we know where the lanes are, we can make educated guess about the position 
     
 because lane lines are continuous and dont change much from frame to frame(unless a very abruspt sharp turn).
     
-This function takes in the fitted polynomial from previous frame defines a margin and looks for non zero pixels in that range only. it greatly increases the speed of the detection.
 
-I have chose margin of 100 here.
-
-```python
-
-    # we have left fitted polynomia (left_fit) and right fitted polynomial (right_fit) from previous frame,
-    # using these polynomial and y coordinates of non zero pixels from warped image, 
-    # we calculate corrsponding x coordinate and check if lies within margin, if it does then
-    # then we count that pixel as being one from the lane lines.
-    left_lane_inds = ((nonzerox > (left_fit[0]*(nonzeroy**2) + left_fit[1]*nonzeroy + 
-                    left_fit[2] - margin)) & (nonzerox < (left_fit[0]*(nonzeroy**2) + 
-                    left_fit[1]*nonzeroy + left_fit[2] + margin))).nonzero()[0]
-    right_lane_inds = ((nonzerox > (right_fit[0]*(nonzeroy**2) + right_fit[1]*nonzeroy + 
-                    right_fit[2] - margin)) & (nonzerox < (right_fit[0]*(nonzeroy**2) + 
-                    right_fit[1]*nonzeroy + right_fit[2] + margin))).nonzero()[0]
-```
-
-__`measure_curvature_real()`__
-
-This function calculates curvature of the lane in the real world using conversion factor in x and y direction as :
-
-    ym_per_pix = 30/720 # meters per pixel in y dimension
-    xm_per_pix = 3.7/700 # meters per pixel in x dimension
-    
-Formula for curavature `R = (1 + (2Ay + B)^2)^(3/2) / (|2A|)`
-    
-```pyhon
-    # It was meentioned in one the course note that camera was mounted in the middle of the car,
-    # so the postiion of the car is middle of the image, the we calculate the middle of lane using
-    # two fitted polynomials
-    car_pos = img_shape[1]/2
-    left_lane_bottom_x = left_fit_cr[0]*img.shape[0]**2 + left_fit_cr[1]*img.shape[0] + left_fit_cr[2]
-    right_lane_bottom_x = right_fit_cr[0]*img.shape[0]**2 + right_fit_cr[1]*img.shape[0] + right_fit_cr[2]
-    lane_center_position = ((right_lane_bottom_x - left_lane_bottom_x) / 2) + left_lane_bottom_x
-    car_center_offset = np.abs(car_pos - lane_center_position) * xm_per_pix
-``` 
-
-__`draw_lane()`__
-
-Given warped lane image, undistorted image and lane cooefficients this function draws lane on undistorted image.
-
-* first it generates y coordinates using
-
-```python
-ploty = np.linspace(0, undistorted_img.shape[0]-1, undistorted_img.shape[0])
-```
-* for each y value it calculates x values from the fitted polynomials for both the lanes 
-
-* Plots these points onto a blanked image copied from warped image
-
-* using inverse perspective transform these lanes are again mapped back real camera view
-
-```python
-newwarp = inv_perspective_transform(color_warp)
-```
 
 * Finally both the images are merged together
 
