@@ -56,7 +56,7 @@ if used to detect lane on only image then only `find_lane_pixels()` will be call
 __Hyperparameter for window:__
 * nwindows = 9
 * margin = 100
-* minpix = 200
+* minpix = 50
 
 * __step 1:__ Get the histogram of warped input image
 
@@ -94,9 +94,4 @@ because lane lines are continuous and dont change much from frame to frame(unles
     
 
 
-* Finally both the images are merged together
-
-```python
-result = cv2.addWeighted(undistorted_img, 1, newwarp, 0.3, 0)
-```
-
+* Finally all the images are merged together into one output video showing it's pipeline
