@@ -1,8 +1,6 @@
 # Lane_Detection_Computer_Vision
  ## Advanced Lane Finding
 
-<img src="examples/example_output.jpg" alt="Lane line"/>
-
 ---
 
 Overview
@@ -24,38 +22,19 @@ Installations
 ---
 
 1. Install Anaconda on your local setup (Choose Python 3 version - [Link](https://www.anaconda.com/distribution/))
-2. Create an environment (More on environments [here](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html))
-Open cmd and type - `> conda create --name myenv` This will create an environment with default python version, which is Python 3 for this project.
-3. Activate the environment, using `> activate myenv`
-4. Install Libraries :
+2. Install Libraries :
 OpenCV : `> conda install -c conda-forge opencv `
 moviepy (used in this project to work with videos): `> pip install moviepy`
 
-[image1]: ./output_images/distortion_correction_chessboard.png "Undistorted"
-[image2]: ./output_images/distortion_correction_road.png "Road undistorted"
-[image3]: ./output_images/X_gradient_and_color_thresholding.png "Thresholded"
-[image4]: ./output_images/perspective_transform.png "Warp Example"
-[image5]: ./output_images/histogram.png "Histogram"
-[image6]: ./output_images/windows.png "Sliding window"
-[image7]: ./output_images/Final_output.png "Final output"
 
----
-
-### Undistoring images using save calibration parameters
-
-##### Chessboard
-![alt text][image1]
-
-##### Road image
-![alt text][image2]
+### Undistoring images 
 
 
 ### Thresholding - Color thresholding and Gradient thresholding
-![alt text][image3]
+
 
 
 ### Perspective and Inverse perspective transform
-![alt text][image4]
 
 
 ### Lane line identification
@@ -175,7 +154,4 @@ newwarp = inv_perspective_transform(color_warp)
 ```python
 result = cv2.addWeighted(undistorted_img, 1, newwarp, 0.3, 0)
 ```
-
-##### Final output image
-![alt text][image7]
 
